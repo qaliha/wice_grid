@@ -628,7 +628,9 @@ module Wice
                outer_window:  2
       )
 
-      content ||= '<ul class="list-inline mb-0"></ul>'
+      if content.nil? || content.empty?
+        content << '<ul class="list-inline mb-0"></ul>'
+      end
 
       content << (' <ul class="list-inline list-inline-dotted mb-0 mt-2 mt-sm-0">' + html + '</ul>').html_safe
     end
