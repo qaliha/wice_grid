@@ -620,14 +620,17 @@ module Wice
 
       html = pagination_info(grid, allow_showing_all_records)
 
-      paginate(grid.resultset,
+      content = paginate(grid.resultset,
                theme:         pagination_theme,
                param_name:    "#{grid.name}[page]",
                params:        extra_request_parameters,
                inner_window:  4,
                outer_window:  2
-      ) +
-        (' <ul class="list-inline mb-0 mt-1 mt-sm-0">' + html + '</ul>').html_safe
+      )
+
+      content ||= '<ul class="list-inline mb-0"></ul>'
+
+      content << (' <ul class="list-inline list-inline-dotted mb-0 mt-2 mt-sm-0">' + html + '</ul>').html_safe
     end
 
     def show_all_link(collection_total_entries, parameters, _grid_name) #:nodoc:
@@ -701,7 +704,7 @@ module Wice
           show_all_records_link = limit > collection_total_entries
         end
 
-        "<li class=\"list-inline-item\"><span class=\"font-weight-semibold\">#{first}-#{last}</span> of <span class=\"font-weight-semibold\">#{collection_total_entries}</span></li>" +
+        "<li class=\"list-inline-item\">Menampilkan <span class=\"font-weight-semibold\">#{first}-#{last}</span> dari <span class=\"font-weight-semibold\">#{collection_total_entries}</span></li>" +
           if show_all_records_link
             res, _js = show_all_link(collection_total_entries, parameters, grid.name)
 
