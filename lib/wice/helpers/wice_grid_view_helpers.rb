@@ -403,18 +403,8 @@ module Wice
         end
       end
 
-      grid.output_buffer << '</thead><tfoot>'
-      grid.output_buffer << rendering.pagination_panel(number_of_columns, options[:hide_csv_button]) do
-        if pagination_panel_content_html
-          pagination_panel_content_html
-        else
-          pagination_panel_content_html =
-            pagination_panel_content(grid, options[:extra_request_parameters], options[:allow_showing_all_records], options[:pagination_theme])
-          pagination_panel_content_html
-        end
-      end
-
-      grid.output_buffer << '</tfoot><tbody>'
+      grid.output_buffer << '</thead>'
+      grid.output_buffer << '<tbody>'
 
       # rendering  rows
       cell_value_of_the_ordered_column = nil
@@ -503,6 +493,16 @@ module Wice
       grid.output_buffer << content_tag(:div, '', wg_data)
 
       grid.output_buffer << '</div>'
+
+      grid.output_buffer << rendering.pagination_panel(number_of_columns, options[:hide_csv_button]) do
+        if pagination_panel_content_html
+          pagination_panel_content_html
+        else
+          pagination_panel_content_html =
+            pagination_panel_content(grid, options[:extra_request_parameters], options[:allow_showing_all_records], options[:pagination_theme])
+          pagination_panel_content_html
+        end
+      end
 
       if Rails.env.development?
         grid.output_buffer << javascript_tag(%/ document.ready = function(){ \n/ +
@@ -627,7 +627,7 @@ module Wice
                inner_window:  4,
                outer_window:  2
       ) +
-        (' <div class="pagination_status">' + html + '</div>').html_safe
+        (' <ul class="list-inline mb-0 mt-1 mt-sm-0">' + html + '</ul>').html_safe
     end
 
     def show_all_link(collection_total_entries, parameters, _grid_name) #:nodoc:
@@ -701,16 +701,17 @@ module Wice
           show_all_records_link = limit > collection_total_entries
         end
 
-        "#{first}-#{last} / #{collection_total_entries} " +
+        "<li class=\"list-inline-item\"><span class=\"font-weight-semibold\">#{first}-#{last}</span> of <span class=\"font-weight-semibold\">#{collection_total_entries}</span></li>" +
           if show_all_records_link
             res, _js = show_all_link(collection_total_entries, parameters, grid.name)
-            res
+
+            "<li class=\"list-inline-item\">#{res}</li>"
           else
             ''
           end
       end +
         if grid.all_record_mode?
-          back_to_pagination_link(parameters, grid.name)
+          "<li class=\"list-inline-item\">#{back_to_pagination_link(parameters, grid.name)}</li>"
         else
           ''
         end

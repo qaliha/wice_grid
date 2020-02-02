@@ -115,21 +115,24 @@ module Wice
     def pagination_panel(number_of_columns, hide_csv_button)  #:nodoc:
       panel = yield
 
-      render_csv_button = @grid.export_to_csv_enabled && !hide_csv_button
-
-      if panel.nil?
-        if render_csv_button
-          "<tr><td colspan=\"#{number_of_columns}\"></td><td>#{csv_export_icon}</td></tr>"
-        else
-          ''
-        end
-      else
-        if render_csv_button
-          "<tr><td colspan=\"#{number_of_columns}\">#{panel}</td><td>#{csv_export_icon}</td></tr>"
-        else
-          "<tr><td colspan=\"#{number_of_columns + 1}\">#{panel}</td></tr>"
-        end
+      unless panel.nil?
+        "<div class=\"card-footer bg-white d-sm-flex justify-content-sm-between align-items-sm-center\">#{panel}</div>"
       end
+      # render_csv_button = @grid.export_to_csv_enabled && !hide_csv_button
+
+      # if panel.nil?
+      #   if render_csv_button
+      #     "<tr><td colspan=\"#{number_of_columns}\"></td><td>#{csv_export_icon}</td></tr>"
+      #   else
+      #     ''
+      #   end
+      # else
+      #   if render_csv_button
+      #     "<tr><td colspan=\"#{number_of_columns}\">#{panel}</td><td>#{csv_export_icon}</td></tr>"
+      #   else
+      #     "<tr><td colspan=\"#{number_of_columns + 1}\">#{panel}</td></tr>"
+      #   end
+      # end
     end
 
     # Takes one argument and adds the  <caption></caption> tag to the table with the
