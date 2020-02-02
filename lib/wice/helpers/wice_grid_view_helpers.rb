@@ -632,7 +632,9 @@ module Wice
         content << '<ul class="list-inline mb-0"></ul>'
       end
 
-      content << (' <ul class="list-inline list-inline-dotted mb-0 mt-2 mt-sm-0">' + html + '</ul>').html_safe
+      content << (' <ul class="list-inline list-inline-dotted mb-0 mt-2 mt-sm-0">' + html + '</ul>')
+
+      content.html_safe
     end
 
     def show_all_link(collection_total_entries, parameters, _grid_name) #:nodoc:
